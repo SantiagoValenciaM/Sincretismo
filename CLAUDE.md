@@ -31,61 +31,34 @@ Los archivos de documentación (GDD, Estado del Arte, etc.) van en la raíz del 
 ## ESTRUCTURA DEL PROYECTO
 
 ```
-Sincretismo/                          ← REPO (raíz Git)
-├── CLAUDE.md                         ← Este archivo
-├── README.md
+Sincretismo/							                              ← (repo root)
+├── CLAUDE.md
+├── README.md								  		  				  ← This File
 ├── docs/
-│   ├── GDD_TenPager.pdf
-│   ├── EstadoDelArte.docx
-│   └── sprint_planning.xlsx
-│
-└── sincretismo-game_beta/
-    └── sincretismo(beta)/            ← GODOT (project.godot aquí)
-        ├── project.godot
-        ├── scenes/
-        │   ├── Main.tscn
-        │   ├── Game.tscn
-        │   ├── player/Player.tscn
-        │   ├── enemies/
-        │   │   ├── EnemyBase.tscn
-        │   │   ├── Procesional.tscn
-        │   │   └── Veladora.tscn
-        │   ├── zones/Zone1.tscn
-        │   ├── altars/
-        │   │   ├── AltarMenor.tscn
-        │   │   └── AltarMayor.tscn
-        │   ├── bosses/Mayordomo.tscn
-        │   └── ui/
-        │       ├── HUD.tscn
-        │       ├── MandaUI.tscn
-        │       ├── TitleScreen.tscn
-        │       ├── GameOver.tscn
-        │       └── Victory.tscn
-        ├── scripts/
-        │   ├── player/
-        │   │   └── promesero.gd
-        │   ├── enemies/
-        │   │   ├── enemy_base.gd
-        │   │   ├── procesional.gd
-        │   │   └── veladora.gd
-        │   ├── bosses/
-        │   │   └── mayordomo.gd
-        │   ├── systems/
-        │   │   ├── game_manager.gd       # Autoload
-        │   │   ├── gracia_system.gd      # Autoload
-        │   │   ├── manda_system.gd       # Autoload
-        │   │   └── checkpoint_system.gd  # Autoload
-        │   ├── altars/
-        │   │   ├── altar_menor.gd
-        │   │   └── altar_mayor.gd
-        │   └── ui/
-        │       ├── hud.gd
-        │       ├── manda_ui.gd
-        │       └── title_screen.gd
-        └── assets/
-            ├── kenney/
-            ├── audio/
-            └── tilesets/
+│   ├── Act9 UI.docx
+│   └── SINCRETISMO_GDD_V1.pdf
+├── sprites/								  		  				  ← Sprites (not finished yet)
+│   └── promesero/
+│       ├── personaje_principal_conFondo.png
+│       ├── personaje_principal_attackLight.png
+│       ├── personaje_principal_attackHeavy.png
+│       ├── personaje_principal_idle.png
+│       └── personaje_principal_walking.png
+├── sincretismo-game_beta/											  ← GODOT (project.godot aquí)
+│   └── sincretismo(beta)/
+│       ├── .gitattributes
+│       ├── .editorconfig
+│       ├── .gitignore
+│       ├── icon.svg
+│       ├── icon.svg.import
+│       └── project.godot
+├── Flores Gomez Jonathan Alejandro/								  ← (ignore)
+│   
+├── Baltazar Jimenez Juan Pablo/								  	  ← (ignore)
+│   
+├── Cardenas Puente Jorge Rafael/								  	  ← (ignore)
+│   
+└── Valencia Massaky Santiago/								  		  ← (ignore)
 ```
 
 ---
