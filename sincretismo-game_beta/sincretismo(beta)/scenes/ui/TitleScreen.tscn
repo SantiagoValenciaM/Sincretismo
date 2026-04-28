@@ -1,0 +1,543 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/title_screen.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/menu_background.png" id="2_bg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
+bg_color = Color(0.11, 0.098, 0.09, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.98, 0.655, 0, 0.45)
+content_margin_left = 24.0
+content_margin_right = 24.0
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2"]
+bg_color = Color(0.16, 0.14, 0.12, 0.88)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.98, 0.655, 0, 0.9)
+content_margin_left = 24.0
+content_margin_right = 24.0
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3"]
+bg_color = Color(0.22, 0.18, 0.14, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.98, 0.655, 0, 1.0)
+content_margin_left = 24.0
+content_margin_right = 24.0
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4"]
+bg_color = Color(0.11, 0.098, 0.09, 0.92)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.98, 0.655, 0, 0.7)
+content_margin_left = 36.0
+content_margin_right = 36.0
+content_margin_top = 36.0
+content_margin_bottom = 36.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5"]
+bg_color = Color(0.11, 0.098, 0.09, 0.7)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.98, 0.655, 0, 0.4)
+content_margin_left = 20.0
+content_margin_right = 20.0
+content_margin_top = 14.0
+content_margin_bottom = 14.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6"]
+bg_color = Color(0.16, 0.14, 0.12, 0.85)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.98, 0.655, 0, 0.9)
+content_margin_left = 20.0
+content_margin_right = 20.0
+content_margin_top = 14.0
+content_margin_bottom = 14.0
+
+[node name="TitleScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_script")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="BgOverlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.05, 0.04, 0.04, 0.45)
+
+[node name="MainMenu" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 80.0
+offset_top = -150.0
+offset_right = 460.0
+offset_bottom = 150.0
+grow_vertical = 2
+theme_override_constants/separation = 6
+
+[node name="TituloLabel" type="Label" parent="MainMenu"]
+layout_mode = 2
+text = "SINCRETISMO"
+theme_override_font_sizes/font_size = 52
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.8)
+
+[node name="SubtituloLabel" type="Label" parent="MainMenu"]
+layout_mode = 2
+text = "Almas que arden, nunca mueren"
+theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 0.55)
+
+[node name="Separador" type="Control" parent="MainMenu"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 16)
+
+[node name="BotonesContainer" type="VBoxContainer" parent="MainMenu"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="BtnContinuar" type="Button" parent="MainMenu/BotonesContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(280, 0)
+text = "Continuar Partida"
+alignment = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_1")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3")
+theme_override_styles/focus = SubResource("StyleBoxFlat_2")
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 0.82, 0.25, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.9, 0.4, 1)
+theme_override_font_sizes/font_size = 18
+
+[node name="BtnNueva" type="Button" parent="MainMenu/BotonesContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(280, 0)
+text = "Nueva Promesa"
+alignment = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_1")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3")
+theme_override_styles/focus = SubResource("StyleBoxFlat_2")
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 0.82, 0.25, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.9, 0.4, 1)
+theme_override_font_sizes/font_size = 18
+
+[node name="BtnOpciones" type="Button" parent="MainMenu/BotonesContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(280, 0)
+text = "Ajustes del Alma"
+alignment = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_1")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3")
+theme_override_styles/focus = SubResource("StyleBoxFlat_2")
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 0.82, 0.25, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.9, 0.4, 1)
+theme_override_font_sizes/font_size = 18
+
+[node name="BtnCreditos" type="Button" parent="MainMenu/BotonesContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(280, 0)
+text = "Créditos"
+alignment = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_1")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3")
+theme_override_styles/focus = SubResource("StyleBoxFlat_2")
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 0.82, 0.25, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.9, 0.4, 1)
+theme_override_font_sizes/font_size = 18
+
+[node name="BtnSalir" type="Button" parent="MainMenu/BotonesContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(280, 0)
+text = "Abandonar la Fe"
+alignment = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_1")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3")
+theme_override_styles/focus = SubResource("StyleBoxFlat_2")
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 0.65)
+theme_override_colors/font_hover_color = Color(0.9, 0.28, 0.18, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.38, 0.28, 1)
+theme_override_font_sizes/font_size = 18
+
+[node name="PanelSlots" type="PanelContainer" parent="."]
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -240.0
+offset_right = 300.0
+offset_bottom = 240.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+theme_override_styles/panel = SubResource("StyleBoxFlat_4")
+
+[node name="VBox" type="VBoxContainer" parent="PanelSlots"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TitleLabel" type="Label" parent="PanelSlots/VBox"]
+layout_mode = 2
+text = "Escoger Partida"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 32
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.8)
+
+[node name="SlotsContainer" type="VBoxContainer" parent="PanelSlots/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Slot0" type="Button" parent="PanelSlots/VBox/SlotsContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(488, 64)
+text = "[ Vacío ]"
+alignment = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_5")
+theme_override_styles/hover = SubResource("StyleBoxFlat_6")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3")
+theme_override_styles/focus = SubResource("StyleBoxFlat_6")
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 0.5)
+theme_override_colors/font_hover_color = Color(1, 0.82, 0.25, 1)
+theme_override_font_sizes/font_size = 16
+
+[node name="Slot1" type="Button" parent="PanelSlots/VBox/SlotsContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(488, 64)
+text = "[ Vacío ]"
+alignment = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_5")
+theme_override_styles/hover = SubResource("StyleBoxFlat_6")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3")
+theme_override_styles/focus = SubResource("StyleBoxFlat_6")
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 0.5)
+theme_override_colors/font_hover_color = Color(1, 0.82, 0.25, 1)
+theme_override_font_sizes/font_size = 16
+
+[node name="Slot2" type="Button" parent="PanelSlots/VBox/SlotsContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(488, 64)
+text = "[ Vacío ]"
+alignment = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_5")
+theme_override_styles/hover = SubResource("StyleBoxFlat_6")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3")
+theme_override_styles/focus = SubResource("StyleBoxFlat_6")
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 0.5)
+theme_override_colors/font_hover_color = Color(1, 0.82, 0.25, 1)
+theme_override_font_sizes/font_size = 16
+
+[node name="BtnVolver" type="Button" parent="PanelSlots/VBox"]
+layout_mode = 2
+text = "← Volver"
+alignment = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_1")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3")
+theme_override_styles/focus = SubResource("StyleBoxFlat_2")
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 0.7)
+theme_override_colors/font_hover_color = Color(1, 0.82, 0.25, 1)
+theme_override_font_sizes/font_size = 15
+
+[node name="PanelOpciones" type="PanelContainer" parent="."]
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -200.0
+offset_right = 260.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+theme_override_styles/panel = SubResource("StyleBoxFlat_4")
+
+[node name="VBox" type="VBoxContainer" parent="PanelOpciones"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TitleLabel" type="Label" parent="PanelOpciones/VBox"]
+layout_mode = 2
+text = "Ajustes del Alma"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 32
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.8)
+
+[node name="VolumenContainer" type="HBoxContainer" parent="PanelOpciones/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="VolumenLabel" type="Label" parent="PanelOpciones/VBox/VolumenContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Volumen Maestro"
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 0.9)
+
+[node name="HSlider" type="HSlider" parent="PanelOpciones/VBox/VolumenContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(160, 0)
+max_value = 100.0
+value = 50.0
+
+[node name="PantallaContainer" type="HBoxContainer" parent="PanelOpciones/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="PantallaLabel" type="Label" parent="PanelOpciones/VBox/PantallaContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Pantalla Completa"
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 0.9)
+
+[node name="CheckButton" type="CheckButton" parent="PanelOpciones/VBox/PantallaContainer"]
+layout_mode = 2
+
+[node name="BtnVolver" type="Button" parent="PanelOpciones/VBox"]
+layout_mode = 2
+text = "← Volver"
+alignment = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_1")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3")
+theme_override_styles/focus = SubResource("StyleBoxFlat_2")
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 0.7)
+theme_override_colors/font_hover_color = Color(1, 0.82, 0.25, 1)
+theme_override_font_sizes/font_size = 15
+
+[node name="PanelCreditos" type="PanelContainer" parent="."]
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -250.0
+offset_right = 280.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+theme_override_styles/panel = SubResource("StyleBoxFlat_4")
+
+[node name="VBox" type="VBoxContainer" parent="PanelCreditos"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TitleLabel" type="Label" parent="PanelCreditos/VBox"]
+layout_mode = 2
+text = "Créditos"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 32
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.8)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelCreditos/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+custom_minimum_size = Vector2(0, 300)
+
+[node name="CreditosVBox" type="VBoxContainer" parent="PanelCreditos/VBox/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+
+[node name="LblArte" type="Label" parent="PanelCreditos/VBox/ScrollContainer/CreditosVBox"]
+layout_mode = 2
+text = "Dirección de Arte
+Baltazar Jimenez Juan Pablo"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 0.9)
+
+[node name="LblProgramacion" type="Label" parent="PanelCreditos/VBox/ScrollContainer/CreditosVBox"]
+layout_mode = 2
+text = "Programación
+Baltazar Jimenez Juan Pablo
+Cárdenas Puente Jorge Rafael
+Valencia Massaky Santiago"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 0.9)
+
+[node name="LblMusica" type="Label" parent="PanelCreditos/VBox/ScrollContainer/CreditosVBox"]
+layout_mode = 2
+text = "Música
+Valencia Massaky Santiago"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 0.9)
+
+[node name="LblAgradecimientos" type="Label" parent="PanelCreditos/VBox/ScrollContainer/CreditosVBox"]
+layout_mode = 2
+text = "Gracias al pueblo que nunca olvida."
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 13
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 0.5)
+
+[node name="BtnVolver" type="Button" parent="PanelCreditos/VBox"]
+layout_mode = 2
+text = "← Volver"
+alignment = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_1")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3")
+theme_override_styles/focus = SubResource("StyleBoxFlat_2")
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 0.7)
+theme_override_colors/font_hover_color = Color(1, 0.82, 0.25, 1)
+theme_override_font_sizes/font_size = 15
+
+[node name="ModalSobreescribir" type="PanelContainer" parent="."]
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -110.0
+offset_right = 220.0
+offset_bottom = 110.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+theme_override_styles/panel = SubResource("StyleBoxFlat_4")
+
+[node name="VBox" type="VBoxContainer" parent="ModalSobreescribir"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 24
+
+[node name="PreguntaLabel" type="Label" parent="ModalSobreescribir/VBox"]
+layout_mode = 2
+text = "¿Borrar la promesa anterior?"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 1)
+
+[node name="BotonesModal" type="HBoxContainer" parent="ModalSobreescribir/VBox"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 16
+
+[node name="BtnConfirmar" type="Button" parent="ModalSobreescribir/VBox/BotonesModal"]
+layout_mode = 2
+custom_minimum_size = Vector2(148, 0)
+text = "Sí, comenzar de nuevo"
+theme_override_styles/normal = SubResource("StyleBoxFlat_1")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3")
+theme_override_styles/focus = SubResource("StyleBoxFlat_2")
+theme_override_colors/font_color = Color(0.3, 0.85, 0.3, 1)
+theme_override_colors/font_hover_color = Color(0.4, 1, 0.4, 1)
+theme_override_font_sizes/font_size = 14
+
+[node name="BtnCancelar" type="Button" parent="ModalSobreescribir/VBox/BotonesModal"]
+layout_mode = 2
+custom_minimum_size = Vector2(100, 0)
+text = "No"
+theme_override_styles/normal = SubResource("StyleBoxFlat_1")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3")
+theme_override_styles/focus = SubResource("StyleBoxFlat_2")
+theme_override_colors/font_color = Color(0.85, 0.25, 0.18, 1)
+theme_override_colors/font_hover_color = Color(1, 0.35, 0.25, 1)
+theme_override_font_sizes/font_size = 14
+
+[node name="PantallaCarga" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+color = Color(0.07, 0.06, 0.05, 1.0)
+
+[node name="CargandoLabel" type="Label" parent="PantallaCarga"]
+layout_mode = 1
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 0.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = -56.0
+offset_right = 420.0
+offset_bottom = -20.0
+text = "La fe guía el camino..."
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 0.8)
+
+[connection signal="pressed" from="MainMenu/BotonesContainer/BtnContinuar" to="." method="_on_btn_continuar_pressed"]
+[connection signal="pressed" from="MainMenu/BotonesContainer/BtnNueva" to="." method="_on_btn_nueva_pressed"]
+[connection signal="pressed" from="MainMenu/BotonesContainer/BtnOpciones" to="." method="_on_btn_opciones_pressed"]
+[connection signal="pressed" from="MainMenu/BotonesContainer/BtnCreditos" to="." method="_on_btn_creditos_pressed"]
+[connection signal="pressed" from="MainMenu/BotonesContainer/BtnSalir" to="." method="_on_btn_salir_pressed"]
+[connection signal="pressed" from="PanelSlots/VBox/BtnVolver" to="." method="_on_btn_volver_pressed"]
+[connection signal="pressed" from="PanelSlots/VBox/SlotsContainer/Slot0" to="." method="_on_slot_pressed" binds=[0]]
+[connection signal="pressed" from="PanelSlots/VBox/SlotsContainer/Slot1" to="." method="_on_slot_pressed" binds=[1]]
+[connection signal="pressed" from="PanelSlots/VBox/SlotsContainer/Slot2" to="." method="_on_slot_pressed" binds=[2]]
+[connection signal="pressed" from="PanelOpciones/VBox/BtnVolver" to="." method="_on_btn_volver_pressed"]
+[connection signal="value_changed" from="PanelOpciones/VBox/VolumenContainer/HSlider" to="." method="_on_slider_volumen_value_changed"]
+[connection signal="toggled" from="PanelOpciones/VBox/PantallaContainer/CheckButton" to="." method="_on_btn_fullscreen_toggled"]
+[connection signal="pressed" from="PanelCreditos/VBox/BtnVolver" to="." method="_on_btn_volver_pressed"]
+[connection signal="pressed" from="ModalSobreescribir/VBox/BotonesModal/BtnConfirmar" to="." method="_on_btn_confirmar_pressed"]
+[connection signal="pressed" from="ModalSobreescribir/VBox/BotonesModal/BtnCancelar" to="." method="_on_btn_cancelar_pressed"]
