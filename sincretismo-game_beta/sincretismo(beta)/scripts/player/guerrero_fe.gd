@@ -27,24 +27,35 @@ signal stamina_changed(nuevo: float)
 signal gracia_changed(nuevo: float)
 signal player_died
 
-var _coyote:   float = 0.0
-var _jbuffer:  float = 0.0
-var _atk_t:    float = 0.0
-var _dodge_t:  float = 0.0
-var _hurt_t:   float = 0.0
-var _hitbox_t: float = 0.0
-var _inv_t:    float = 0.0
-var _facing:   float = 1.0
-var _was_floor: bool = false
-var _flash_t:  float = 0.0
+var _coyote:    float = 0.0
+var _jbuffer:   float = 0.0
+var _atk_t:     float = 0.0
+var _dodge_t:   float = 0.0
+var _hurt_t:    float = 0.0
+var _hitbox_t:  float = 0.0
+var _inv_t:     float = 0.0
+var _facing:    float = 1.0
+var _was_floor: bool  = false
+var _flash_t:   float = 0.0
 var _flash_col: Color = Color.WHITE
+var _usar_sprite: bool = false
 
 @onready var visual:       Polygon2D        = $Visual
+@onready var sprite:       Sprite2D         = $Sprite
 @onready var hitbox_light: Area2D           = $HitboxLight
 @onready var hitbox_heavy: Area2D           = $HitboxHeavy
 @onready var hurtbox:      Area2D           = $Hurtbox
 @onready var _cs_hl: CollisionShape2D       = $HitboxLight/CollisionShape2D
 @onready var _cs_hh: CollisionShape2D       = $HitboxHeavy/CollisionShape2D
+
+const _BASE_SPRITE := "res://assets/sprites/promesero/"
+const _SPRITE_MAP := {
+	"idle":         "idle.png",
+	"walk":         "walk.png",
+	"attack_light": "attack_light.png",
+	"attack_heavy": "attack_heavy.png",
+}
+var _texturas: Dictionary = {}
 
 const _COLORES := {
 	Estado.IDLE:         Color(0.65, 0.65, 0.65),
@@ -68,6 +79,19 @@ func _ready() -> void:
 	hitbox_light.set_meta("damage", 10)
 	hitbox_heavy.set_meta("damage", 25)
 	hurtbox.area_entered.connect(_on_hurtbox_area_entered)
+	_cargar_sprites()
+
+
+func _cargar_sprites() -> void:
+	for key in _SPRITE_MAP:
+		var path: String = _BASE_SPRITE + _SPRITE_MAP[key]
+		if ResourceLoader.exists(path):
+			_texturas[key] = load(path)
+	if _texturas.has("idle"):
+		_usar_sprite = true
+		visual.visible = false
+		sprite.visible = true
+		sprite.texture = _texturas["idle"]
 
 
 func _physics_process(delta: float) -> void:
@@ -91,7 +115,24 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	_fsm_update()
-	visual.modulate = _flash_col if _flash_t > 0.0 else _COLORES.get(estado, Color.WHITE)
+	_actualizar_visual()
+
+
+func _actualizar_visual() -> void:
+	var tint := _flash_col if _flash_t > 0.0 else Color.WHITE
+	if _usar_sprite:
+		sprite.modulate = tint
+		sprite.scale.x  = abs(sprite.scale.x) * _facing
+		var key := "idle"
+		match estado:
+			Estado.RUN:          key = "walk"
+			Estado.ATTACK_LIGHT: key = "attack_light"
+			Estado.ATTACK_HEAVY: key = "attack_heavy"
+		if _texturas.has(key):
+			sprite.texture = _texturas[key]
+	else:
+		visual.modulate = tint if _flash_t > 0.0 else _COLORES.get(estado, Color.WHITE)
+		visual.scale.x  = _facing
 
 
 func _gravedad(delta: float) -> void:
@@ -141,7 +182,6 @@ func _mover(delta: float) -> void:
 	var dir := Input.get_axis("move_left", "move_right")
 	if dir != 0.0:
 		_facing = sign(dir)
-		visual.scale.x = _facing
 		velocity.x = move_toward(velocity.x, dir * SPEED, ACCEL * delta)
 	else:
 		velocity.x = move_toward(velocity.x, 0.0, FRICTION * delta)
@@ -181,6 +221,7 @@ func _ataque() -> void:
 		_atk_t   = 0.55
 		_hitbox_t= 0.20
 		_cs_hh.disabled = false
+		hitbox_heavy.set_meta("damage", int(25.0 * MandaSystem.modificador_ataque_pesado()))
 		AudioManager.play("atk_heavy")
 
 

@@ -4,8 +4,18 @@ extends Area2D
 
 var _usado: bool = false
 
-@onready var visual: ColorRect = $Visual
-@onready var label:  Label     = $Label
+@onready var visual:       ColorRect = $Visual
+@onready var label:        Label     = $Label
+@onready var label_prompt: Label     = $LabelPrompt
+
+
+func _process(_delta: float) -> void:
+	if _usado:
+		label_prompt.visible = false
+		return
+	var players: Array = get_tree().get_nodes_in_group("player")
+	label_prompt.visible = not players.is_empty() and \
+		players[0].global_position.distance_to(global_position) < 65.0
 
 
 func _input(event: InputEvent) -> void:
@@ -27,7 +37,18 @@ func _usar(player: Node) -> void:
 	_usado = true
 	visual.color = Color(0.98, 0.655, 0.0, 1)
 	label.text   = "★"
-	CheckpointSystem.registrar(global_position, get_tree().current_scene.scene_file_path)
-	# Elimina todos los enemigos activos
+	var scene := get_tree().current_scene.scene_file_path
+	CheckpointSystem.registrar(global_position, scene)
+	AudioManager.play("altar")
+	SaveSystem.guardar(GameManager.current_save_slot, {
+		"vacio": false,
+		"nombre": "Guerrero de la Fe",
+		"nivel": 1,
+		"zona": "La Parroquia",
+		"tiempo": "00:00:00",
+		"checkpoint_scene": scene,
+		"checkpoint_pos_x": global_position.x,
+		"checkpoint_pos_y": global_position.y,
+	})
 	for enemy in get_tree().get_nodes_in_group("enemies"):
 		enemy.queue_free()

@@ -19,3 +19,9 @@ func respawn() -> void:
 	if not _active:
 		return
 	SceneTransition.fade_to(checkpoint_scene)
+
+
+func reset() -> void:
+	checkpoint_pos   = Vector2.ZERO
+	checkpoint_scene = ""
+	_active          = false

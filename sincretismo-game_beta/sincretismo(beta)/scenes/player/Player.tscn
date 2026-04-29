@@ -24,6 +24,11 @@ script = ExtResource("1_script")
 polygon = PackedVector2Array(-12, -24, 12, -24, 12, 24, -12, 24)
 color = Color(0.65, 0.65, 0.65, 1)
 
+[node name="Sprite" type="Sprite2D" parent="."]
+visible = false
+scale = Vector2(0.06, 0.06)
+centered = true
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_1")
 

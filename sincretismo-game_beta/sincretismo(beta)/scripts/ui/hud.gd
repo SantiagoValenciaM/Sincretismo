@@ -4,13 +4,30 @@ extends CanvasLayer
 @onready var bar_stamina: ProgressBar = $Panel/VBox/BarStamina
 @onready var lbl_devocion: Label      = $Panel/VBox/InfoRow/LblDevocion
 @onready var lbl_gracia:   Label      = $Panel/VBox/InfoRow/LblGracia
+@onready var lbl_almas:    Label      = $LblAlmas
 @onready var boss_bar_container: Control = $BossBarContainer
 @onready var bar_boss: ProgressBar    = $BossBarContainer/BarBoss
+
+var _ultimo_conteo: int = -1
 
 
 func _ready() -> void:
 	boss_bar_container.visible = false
 	_conectar_player()
+	MandaSystem.hp_max_changed.connect(_on_hp_max_changed)
+
+
+func _process(_delta: float) -> void:
+	var conteo: int = get_tree().get_nodes_in_group("enemies").size()
+	if conteo == _ultimo_conteo:
+		return
+	_ultimo_conteo = conteo
+	lbl_almas.visible = conteo > 0
+	lbl_almas.text = "%d alma%s" % [conteo, "s" if conteo != 1 else ""]
+
+
+func _on_hp_max_changed(nuevo_max: int) -> void:
+	bar_hp.max_value = nuevo_max
 
 
 func _conectar_player() -> void:

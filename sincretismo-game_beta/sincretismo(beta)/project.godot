@@ -22,6 +22,7 @@ CheckpointSystem="*res://scripts/systems/checkpoint_system.gd"
 MandaSystem="*res://scripts/systems/manda_system.gd"
 SceneTransition="*res://scripts/systems/scene_transition.gd"
 AudioManager="*res://scripts/systems/audio_manager.gd"
+SaveSystem="*res://scripts/systems/save_system.gd"
 
 [display]
 

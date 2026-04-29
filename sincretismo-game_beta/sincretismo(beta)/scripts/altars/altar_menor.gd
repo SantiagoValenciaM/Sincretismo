@@ -4,14 +4,14 @@ extends Area2D
 
 var _activado: bool = false
 
-@onready var visual: ColorRect = $Visual
-@onready var label:  Label     = $Label
+@onready var visual:       ColorRect = $Visual
+@onready var label:        Label     = $Label
+@onready var label_prompt: Label     = $LabelPrompt
 
 
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	_actualizar_visual()
-	# Si spawn point activo coincide con este altar, reposicionar jugador
 	if CheckpointSystem.checkpoint_pos.distance_to(global_position) < 8.0:
 		await get_tree().process_frame
 		var players: Array = get_tree().get_nodes_in_group("player")
@@ -19,6 +19,15 @@ func _ready() -> void:
 			players[0].global_position = global_position + Vector2(0, -20)
 			players[0].hp = players[0].hp_max
 			players[0].hp_changed.emit(players[0].hp)
+
+
+func _process(_delta: float) -> void:
+	if _activado:
+		label_prompt.visible = false
+		return
+	var players: Array = get_tree().get_nodes_in_group("player")
+	label_prompt.visible = not players.is_empty() and \
+		players[0].global_position.distance_to(global_position) < 60.0
 
 
 func _on_body_entered(body: Node) -> void:
@@ -48,7 +57,19 @@ func _usar(player: Node) -> void:
 	player.hp_changed.emit(player.hp)
 	_activado = true
 	_actualizar_visual()
-	CheckpointSystem.registrar(global_position, get_tree().current_scene.scene_file_path)
+	var scene := get_tree().current_scene.scene_file_path
+	CheckpointSystem.registrar(global_position, scene)
+	AudioManager.play("altar")
+	SaveSystem.guardar(GameManager.current_save_slot, {
+		"vacio": false,
+		"nombre": "Guerrero de la Fe",
+		"nivel": 1,
+		"zona": "La Parroquia",
+		"tiempo": "00:00:00",
+		"checkpoint_scene": scene,
+		"checkpoint_pos_x": global_position.x,
+		"checkpoint_pos_y": global_position.y,
+	})
 
 
 func _actualizar_visual() -> void:

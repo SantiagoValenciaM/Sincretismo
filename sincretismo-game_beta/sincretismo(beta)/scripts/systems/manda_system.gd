@@ -7,6 +7,7 @@ var rota: bool      = false
 signal manda_activada
 signal manda_cumplida
 signal manda_rota
+signal hp_max_changed(nuevo_max: int)
 
 
 func activar() -> void:
@@ -20,6 +21,7 @@ func activar() -> void:
 	p.hp_max = int(float(p.hp_max) * 0.8)
 	p.hp     = min(p.hp, p.hp_max)
 	p.hp_changed.emit(p.hp)
+	hp_max_changed.emit(p.hp_max)
 	manda_activada.emit()
 
 
@@ -40,6 +42,7 @@ func romper() -> void:
 	if not players.is_empty():
 		var p: Node = players[0]
 		p.hp_max = int(float(p.hp_max) / 0.8)
+		hp_max_changed.emit(p.hp_max)
 		p.recibir_daño(20)
 	manda_rota.emit()
 

@@ -194,6 +194,20 @@ theme_override_colors/font_hover_color = Color(1, 0.82, 0.25, 1)
 theme_override_colors/font_pressed_color = Color(1, 0.9, 0.4, 1)
 theme_override_font_sizes/font_size = 18
 
+[node name="BtnBorrarPartida" type="Button" parent="MainMenu/BotonesContainer"]
+layout_mode = 2
+custom_minimum_size = Vector2(280, 0)
+text = "Borrar Partida"
+alignment = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_1")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3")
+theme_override_styles/focus = SubResource("StyleBoxFlat_2")
+theme_override_colors/font_color = Color(0.85, 0.25, 0.18, 0.8)
+theme_override_colors/font_hover_color = Color(1, 0.35, 0.25, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.45, 0.35, 1)
+theme_override_font_sizes/font_size = 18
+
 [node name="BtnSalir" type="Button" parent="MainMenu/BotonesContainer"]
 layout_mode = 2
 custom_minimum_size = Vector2(280, 0)
@@ -502,6 +516,62 @@ theme_override_colors/font_color = Color(0.85, 0.25, 0.18, 1)
 theme_override_colors/font_hover_color = Color(1, 0.35, 0.25, 1)
 theme_override_font_sizes/font_size = 14
 
+[node name="ModalBorrar" type="PanelContainer" parent="."]
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -110.0
+offset_right = 220.0
+offset_bottom = 110.0
+grow_horizontal = 2
+grow_vertical = 2
+visible = false
+theme_override_styles/panel = SubResource("StyleBoxFlat_4")
+
+[node name="VBox" type="VBoxContainer" parent="ModalBorrar"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 24
+
+[node name="PreguntaLabel" type="Label" parent="ModalBorrar/VBox"]
+layout_mode = 2
+text = "¿Borrar esta partida para siempre?"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 1)
+
+[node name="BotonesModal" type="HBoxContainer" parent="ModalBorrar/VBox"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 16
+
+[node name="BtnConfirmarBorrar" type="Button" parent="ModalBorrar/VBox/BotonesModal"]
+layout_mode = 2
+custom_minimum_size = Vector2(120, 0)
+text = "Sí, borrar"
+theme_override_styles/normal = SubResource("StyleBoxFlat_1")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3")
+theme_override_styles/focus = SubResource("StyleBoxFlat_2")
+theme_override_colors/font_color = Color(0.85, 0.25, 0.18, 1)
+theme_override_colors/font_hover_color = Color(1, 0.35, 0.25, 1)
+theme_override_font_sizes/font_size = 14
+
+[node name="BtnCancelarBorrar" type="Button" parent="ModalBorrar/VBox/BotonesModal"]
+layout_mode = 2
+custom_minimum_size = Vector2(100, 0)
+text = "No"
+theme_override_styles/normal = SubResource("StyleBoxFlat_1")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_3")
+theme_override_styles/focus = SubResource("StyleBoxFlat_2")
+theme_override_colors/font_color = Color(0.3, 0.85, 0.3, 1)
+theme_override_colors/font_hover_color = Color(0.4, 1, 0.4, 1)
+theme_override_font_sizes/font_size = 14
+
 [node name="PantallaCarga" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -530,6 +600,7 @@ theme_override_colors/font_color = Color(0.98, 0.655, 0, 0.8)
 [connection signal="pressed" from="MainMenu/BotonesContainer/BtnNueva" to="." method="_on_btn_nueva_pressed"]
 [connection signal="pressed" from="MainMenu/BotonesContainer/BtnOpciones" to="." method="_on_btn_opciones_pressed"]
 [connection signal="pressed" from="MainMenu/BotonesContainer/BtnCreditos" to="." method="_on_btn_creditos_pressed"]
+[connection signal="pressed" from="MainMenu/BotonesContainer/BtnBorrarPartida" to="." method="_on_btn_borrar_partida_pressed"]
 [connection signal="pressed" from="MainMenu/BotonesContainer/BtnSalir" to="." method="_on_btn_salir_pressed"]
 [connection signal="pressed" from="PanelSlots/VBox/BtnVolver" to="." method="_on_btn_volver_pressed"]
 [connection signal="pressed" from="PanelSlots/VBox/SlotsContainer/Slot0" to="." method="_on_slot_pressed" binds=[0]]
@@ -541,3 +612,5 @@ theme_override_colors/font_color = Color(0.98, 0.655, 0, 0.8)
 [connection signal="pressed" from="PanelCreditos/VBox/BtnVolver" to="." method="_on_btn_volver_pressed"]
 [connection signal="pressed" from="ModalSobreescribir/VBox/BotonesModal/BtnConfirmar" to="." method="_on_btn_confirmar_pressed"]
 [connection signal="pressed" from="ModalSobreescribir/VBox/BotonesModal/BtnCancelar" to="." method="_on_btn_cancelar_pressed"]
+[connection signal="pressed" from="ModalBorrar/VBox/BotonesModal/BtnConfirmarBorrar" to="." method="_on_btn_confirmar_borrar_pressed"]
+[connection signal="pressed" from="ModalBorrar/VBox/BotonesModal/BtnCancelarBorrar" to="." method="_on_btn_cancelar_borrar_pressed"]

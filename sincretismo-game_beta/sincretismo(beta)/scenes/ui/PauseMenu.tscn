@@ -1,0 +1,129 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/pause_menu.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.11, 0.098, 0.09, 0.95)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.98, 0.655, 0, 0.7)
+content_margin_left = 36.0
+content_margin_right = 36.0
+content_margin_top = 36.0
+content_margin_bottom = 36.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_normal"]
+bg_color = Color(0.11, 0.098, 0.09, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.98, 0.655, 0, 0.45)
+content_margin_left = 24.0
+content_margin_right = 24.0
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hover"]
+bg_color = Color(0.16, 0.14, 0.12, 0.88)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.98, 0.655, 0, 0.9)
+content_margin_left = 24.0
+content_margin_right = 24.0
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+
+[node name="PauseMenu" type="CanvasLayer"]
+layer = 50
+process_mode = 3
+script = ExtResource("1_script")
+
+[node name="Overlay" type="ColorRect" parent="."]
+process_mode = 3
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0, 0.0, 0.0, 0.55)
+mouse_filter = 0
+
+[node name="Panel" type="PanelContainer" parent="."]
+process_mode = 3
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -140.0
+offset_right = 160.0
+offset_bottom = 140.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="VBox" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="LblPausa" type="Label" parent="Panel/VBox"]
+layout_mode = 2
+horizontal_alignment = 1
+text = "PAUSA"
+theme_override_font_sizes/font_size = 32
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.8)
+
+[node name="Separador" type="HSeparator" parent="Panel/VBox"]
+layout_mode = 2
+
+[node name="BtnReanudar" type="Button" parent="Panel/VBox"]
+process_mode = 3
+layout_mode = 2
+custom_minimum_size = Vector2(240, 0)
+text = "Reanudar"
+alignment = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_hover")
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 0.82, 0.25, 1)
+theme_override_font_sizes/font_size = 18
+
+[node name="BtnMenu" type="Button" parent="Panel/VBox"]
+process_mode = 3
+layout_mode = 2
+custom_minimum_size = Vector2(240, 0)
+text = "Menú Principal"
+alignment = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_hover")
+theme_override_colors/font_color = Color(0.98, 0.655, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 0.82, 0.25, 1)
+theme_override_font_sizes/font_size = 18
+
+[node name="BtnSalir" type="Button" parent="Panel/VBox"]
+process_mode = 3
+layout_mode = 2
+custom_minimum_size = Vector2(240, 0)
+text = "Abandonar la Fe"
+alignment = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_hover")
+theme_override_colors/font_color = Color(0.85, 0.25, 0.18, 0.8)
+theme_override_colors/font_hover_color = Color(1, 0.35, 0.25, 1)
+theme_override_font_sizes/font_size = 18
+
+[connection signal="pressed" from="Panel/VBox/BtnReanudar" to="." method="_on_btn_reanudar_pressed"]
+[connection signal="pressed" from="Panel/VBox/BtnMenu" to="." method="_on_btn_menu_pressed"]
+[connection signal="pressed" from="Panel/VBox/BtnSalir" to="." method="_on_btn_salir_pressed"]
