@@ -14,17 +14,17 @@ const _CLIPS: Dictionary = {
 var _pool: Dictionary = {}
 
 
-func play(clip: String) -> void:
-	if not _CLIPS.has(clip):
-		return
-	var path: String = _CLIPS[clip]
-	if not ResourceLoader.exists(path):
-		return
-	if not _pool.has(clip):
+func _ready() -> void:
+	for key in _CLIPS:
+		var path: String = _CLIPS[key]
+		if not ResourceLoader.exists(path):
+			continue
 		var ap := AudioStreamPlayer.new()
-		add_child(ap)
-		_pool[clip] = ap
-	var ap: AudioStreamPlayer = _pool[clip]
-	if ap.stream == null:
 		ap.stream = load(path)
-	ap.play()
+		add_child(ap)
+		_pool[key] = ap
+
+
+func play(clip: String) -> void:
+	if _pool.has(clip):
+		_pool[clip].play()

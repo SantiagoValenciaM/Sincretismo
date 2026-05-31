@@ -1,16 +1,22 @@
 extends Node2D
 
-@onready var camera: Camera2D = $Camera2D
-@onready var player: CharacterBody2D = $Player
-@onready var boss_door: Area2D = $BossDoor
+@onready var camera:   Camera2D        = $Camera2D
+@onready var player:   CharacterBody2D = $Player
+@onready var boss_door: Area2D         = $BossDoor
 
-var _shake_t: float = 0.0
+var _shake_t:   float = 0.0
 var _shake_mag: float = 0.0
 
 
 func _ready() -> void:
 	boss_door.body_entered.connect(_on_boss_door)
-	GameManager.shake_camera.connect(_on_shake)
+	if not GameManager.shake_camera.is_connected(_on_shake):
+		GameManager.shake_camera.connect(_on_shake)
+
+
+func _exit_tree() -> void:
+	if GameManager.shake_camera.is_connected(_on_shake):
+		GameManager.shake_camera.disconnect(_on_shake)
 
 
 func _process(delta: float) -> void:

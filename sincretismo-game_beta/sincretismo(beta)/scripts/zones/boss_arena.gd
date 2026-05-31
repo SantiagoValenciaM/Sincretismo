@@ -1,18 +1,24 @@
 extends Node2D
 
-@onready var camera: Camera2D = $Camera2D
-@onready var player: CharacterBody2D = $Player
+@onready var camera:    Camera2D        = $Camera2D
+@onready var player:    CharacterBody2D = $Player
 @onready var mayordomo: CharacterBody2D = $Mayordomo
-@onready var hud: CanvasLayer = $HUD
+@onready var hud:       CanvasLayer     = $HUD
 
-var _shake_t: float = 0.0
+var _shake_t:   float = 0.0
 var _shake_mag: float = 0.0
 
 
 func _ready() -> void:
 	mayordomo.hp_changed.connect(_on_boss_hp)
 	hud.mostrar_boss_bar("El Mayordomo", mayordomo.HP_MAX)
-	GameManager.shake_camera.connect(_on_shake)
+	if not GameManager.shake_camera.is_connected(_on_shake):
+		GameManager.shake_camera.connect(_on_shake)
+
+
+func _exit_tree() -> void:
+	if GameManager.shake_camera.is_connected(_on_shake):
+		GameManager.shake_camera.disconnect(_on_shake)
 
 
 func _process(delta: float) -> void:

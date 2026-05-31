@@ -7,7 +7,7 @@ radius = 10.0
 height = 36.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1"]
-radius = 150.0
+radius = 220.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
 size = Vector2(60.0, 28.0)
@@ -22,7 +22,11 @@ script = ExtResource("1_script")
 
 [node name="Visual" type="Polygon2D" parent="."]
 polygon = PackedVector2Array(-10, -20, 10, -20, 10, 20, -10, 20)
-color = Color(0.6, 0.15, 0.55, 1)
+color = Color(0.6, 0.15, 0.55, 0)
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+scale = Vector2(2.0, 2.0)
+texture_filter = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_1")

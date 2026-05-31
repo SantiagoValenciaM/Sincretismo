@@ -3,49 +3,40 @@ extends Area2D
 @export var costo_gracia: float = 5.0
 
 var _activado: bool = false
+var _player:   Node = null
 
-@onready var visual:       ColorRect = $Visual
-@onready var label:        Label     = $Label
-@onready var label_prompt: Label     = $LabelPrompt
+@onready var visual:       Sprite2D = $Visual
+@onready var label_prompt: Label    = $LabelPrompt
 
 
 func _ready() -> void:
-	body_entered.connect(_on_body_entered)
+	if CheckpointSystem.hay_checkpoint() and \
+			CheckpointSystem.checkpoint_pos.distance_to(global_position) < 8.0:
+		_activado = true
 	_actualizar_visual()
-	if CheckpointSystem.checkpoint_pos.distance_to(global_position) < 8.0:
-		await get_tree().process_frame
-		var players: Array = get_tree().get_nodes_in_group("player")
-		if not players.is_empty():
-			players[0].global_position = global_position + Vector2(0, -20)
-			players[0].hp = players[0].hp_max
-			players[0].hp_changed.emit(players[0].hp)
+	await get_tree().process_frame
+	var players: Array = get_tree().get_nodes_in_group("player")
+	if not players.is_empty():
+		_player = players[0]
+	if _activado and _player != null:
+		_player.global_position = global_position + Vector2(0, -20)
+		_player.hp = _player.hp_max
+		_player.hp_changed.emit(_player.hp)
 
 
 func _process(_delta: float) -> void:
-	if _activado:
+	if _activado or _player == null:
 		label_prompt.visible = false
 		return
-	var players: Array = get_tree().get_nodes_in_group("player")
-	label_prompt.visible = not players.is_empty() and \
-		players[0].global_position.distance_to(global_position) < 60.0
-
-
-func _on_body_entered(body: Node) -> void:
-	if _activado or not body.is_in_group("player"):
-		return
-	if not Input.is_action_just_pressed("interact"):
-		return
-	_usar(body)
+	label_prompt.visible = _player.global_position.distance_to(global_position) < 60.0
 
 
 func _input(event: InputEvent) -> void:
-	if _activado:
+	if _activado or _player == null:
 		return
 	if event.is_action_pressed("interact"):
-		var players: Array = get_tree().get_nodes_in_group("player")
-		for p in players:
-			if p.global_position.distance_to(global_position) < 40.0:
-				_usar(p)
+		if _player.global_position.distance_to(global_position) < 40.0:
+			_usar(_player)
 
 
 func _usar(player: Node) -> void:
@@ -73,9 +64,4 @@ func _usar(player: Node) -> void:
 
 
 func _actualizar_visual() -> void:
-	if _activado:
-		visual.color = Color(0.98, 0.655, 0.0, 1)
-		label.text   = "✦"
-	else:
-		visual.color = Color(0.3, 0.3, 0.3, 1)
-		label.text   = "†"
+	visual.frame = 1 if _activado else 0

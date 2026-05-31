@@ -41,7 +41,8 @@ func _mostrar() -> void:
 		btn_aceptar.visible = false
 		btn_rechazar.text   = "Cerrar"
 	else:
-		lbl_estado.text     = ""
+		lbl_estado.text     = "Sacrificio: HP máx ×0.8\nBeneficio: ataque pesado +40%"
+		lbl_estado.modulate = Color(0.98, 0.655, 0.0)
 
 	panel.visible = true
 

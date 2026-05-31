@@ -12,6 +12,16 @@ const FALL_MUL := 1.6
 const COYOTE   := 0.12
 const BUFFER   := 0.12
 
+const _TEX_IDLE  := preload("res://assets/sprites/promesero/promesero_idle.png")
+const _TEX_WALK  := preload("res://assets/sprites/promesero/walk.png")
+const _TEX_ATKL0 := preload("res://assets/sprites/promesero/attack_light_f0.png")
+const _TEX_ATKL1 := preload("res://assets/sprites/promesero/attack_light_f1.png")
+const _TEX_ATKL2 := preload("res://assets/sprites/promesero/attack_light_f2.png")
+const _TEX_ATKH  := preload("res://assets/sprites/promesero/attack_heavy.png")
+const _TEX_DEAD  := preload("res://assets/sprites/promesero/dead.png")
+
+static var _frames_cache: SpriteFrames = null
+
 @export var hp_max: int  = 100
 @export var dev_max: int = 10
 
@@ -38,60 +48,95 @@ var _facing:    float = 1.0
 var _was_floor: bool  = false
 var _flash_t:   float = 0.0
 var _flash_col: Color = Color.WHITE
-var _usar_sprite: bool = false
 
-@onready var visual:       Polygon2D        = $Visual
-@onready var sprite:       Sprite2D         = $Sprite
+@onready var sprite:       AnimatedSprite2D = $Sprite2D
 @onready var hitbox_light: Area2D           = $HitboxLight
 @onready var hitbox_heavy: Area2D           = $HitboxHeavy
 @onready var hurtbox:      Area2D           = $Hurtbox
 @onready var _cs_hl: CollisionShape2D       = $HitboxLight/CollisionShape2D
 @onready var _cs_hh: CollisionShape2D       = $HitboxHeavy/CollisionShape2D
 
-const _BASE_SPRITE := "res://assets/sprites/promesero/"
-const _SPRITE_MAP := {
-	"idle":         "idle.png",
-	"walk":         "walk.png",
-	"attack_light": "attack_light.png",
-	"attack_heavy": "attack_heavy.png",
-}
-var _texturas: Dictionary = {}
-
-const _COLORES := {
-	Estado.IDLE:         Color(0.65, 0.65, 0.65),
-	Estado.RUN:          Color(0.25, 0.85, 0.25),
-	Estado.JUMP:         Color(0.25, 0.55, 1.0),
-	Estado.FALL:         Color(0.15, 0.35, 0.85),
-	Estado.ATTACK_LIGHT: Color(1.0,  0.85, 0.0),
-	Estado.ATTACK_HEAVY: Color(1.0,  0.4,  0.0),
-	Estado.DODGE:        Color(0.0,  1.0,  1.0),
-	Estado.HURT:         Color(1.0,  0.0,  0.0),
-	Estado.DEAD:         Color(0.2,  0.2,  0.2),
-}
-
 
 func _ready() -> void:
 	add_to_group("player")
 	_cs_hl.disabled = true
 	_cs_hh.disabled = true
+	var shape_light := RectangleShape2D.new()
+	shape_light.size = Vector2(72, 32)
+	_cs_hl.shape    = shape_light
+	_cs_hl.position = Vector2(44, -4)
+	var shape_heavy := RectangleShape2D.new()
+	shape_heavy.size = Vector2(56, 36)
+	_cs_hh.shape    = shape_heavy
+	_cs_hh.position = Vector2(36, -4)
 	hitbox_light.add_to_group("player_hitbox")
 	hitbox_heavy.add_to_group("player_hitbox")
 	hitbox_light.set_meta("damage", 10)
 	hitbox_heavy.set_meta("damage", 25)
 	hurtbox.area_entered.connect(_on_hurtbox_area_entered)
-	_cargar_sprites()
+	player_died.connect(GameManager._on_player_died)
+	_setup_sprites()
+	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 
 
-func _cargar_sprites() -> void:
-	for key in _SPRITE_MAP:
-		var path: String = _BASE_SPRITE + _SPRITE_MAP[key]
-		if ResourceLoader.exists(path):
-			_texturas[key] = load(path)
-	if _texturas.has("idle"):
-		_usar_sprite = true
-		visual.visible = false
-		sprite.visible = true
-		sprite.texture = _texturas["idle"]
+func _setup_sprites() -> void:
+	if _frames_cache != null:
+		sprite.sprite_frames = _frames_cache
+		sprite.play("idle")
+		return
+
+	var frames := SpriteFrames.new()
+	frames.remove_animation("default")
+
+	frames.add_animation("idle")
+	frames.set_animation_loop("idle", true)
+	frames.set_animation_speed("idle", 6.0)
+	for i in 4:
+		var a := AtlasTexture.new()
+		a.atlas = _TEX_IDLE
+		a.filter_clip = true
+		a.region = Rect2(i * 367, 0, 367, 800)
+		frames.add_frame("idle", a)
+
+	frames.add_animation("walk")
+	frames.set_animation_loop("walk", true)
+	frames.set_animation_speed("walk", 10.0)
+	for i in 6:
+		var a := AtlasTexture.new()
+		a.atlas = _TEX_WALK
+		a.filter_clip = true
+		a.region = Rect2(i * 290, 0, 290, 822)
+		frames.add_frame("walk", a)
+
+	frames.add_animation("attack_light")
+	frames.set_animation_loop("attack_light", false)
+	frames.set_animation_speed("attack_light", 9.0)
+	for tex in [_TEX_ATKL0, _TEX_ATKL1, _TEX_ATKL2]:
+		frames.add_frame("attack_light", tex)
+
+	frames.add_animation("attack_heavy")
+	frames.set_animation_loop("attack_heavy", false)
+	frames.set_animation_speed("attack_heavy", 9.0)
+	for i in 5:
+		var a := AtlasTexture.new()
+		a.atlas = _TEX_ATKH
+		a.filter_clip = true
+		a.region = Rect2(i * 488, 0, 488, 1200)
+		frames.add_frame("attack_heavy", a)
+
+	frames.add_animation("dead")
+	frames.set_animation_loop("dead", false)
+	frames.set_animation_speed("dead", 5.0)
+	for i in 3:
+		var a := AtlasTexture.new()
+		a.atlas = _TEX_DEAD
+		a.filter_clip = true
+		a.region = Rect2(i * 448, 0, 448, 768)
+		frames.add_frame("dead", a)
+
+	_frames_cache = frames
+	sprite.sprite_frames = frames
+	sprite.play("idle")
 
 
 func _physics_process(delta: float) -> void:
@@ -111,6 +156,7 @@ func _physics_process(delta: float) -> void:
 		Estado.HURT:
 			pass
 		Estado.DEAD:
+			_actualizar_visual()
 			return
 
 	move_and_slide()
@@ -119,29 +165,40 @@ func _physics_process(delta: float) -> void:
 
 
 func _actualizar_visual() -> void:
-	var tint := _flash_col if _flash_t > 0.0 else Color.WHITE
-	if _usar_sprite:
-		sprite.modulate = tint
-		sprite.scale.x  = abs(sprite.scale.x) * _facing
-		var key := "idle"
-		match estado:
-			Estado.RUN:          key = "walk"
-			Estado.ATTACK_LIGHT: key = "attack_light"
-			Estado.ATTACK_HEAVY: key = "attack_heavy"
-		if _texturas.has(key):
-			sprite.texture = _texturas[key]
+	sprite.modulate = _flash_col if _flash_t > 0.0 else Color.WHITE
+	if estado == Estado.DEAD:
+		sprite.offset = Vector2(0, 26)
+		if sprite.animation != "dead" and sprite.sprite_frames.has_animation("dead"):
+			sprite.play("dead")
+		return
+	var anim := "idle"
+	match estado:
+		Estado.RUN:
+			anim = "walk"
+		Estado.ATTACK_LIGHT:
+			anim = "attack_light"
+		Estado.ATTACK_HEAVY:
+			anim = "attack_heavy"
+	if sprite.animation != anim:
+		sprite.play(anim)
+	if anim == "walk":
+		sprite.flip_h = _facing > 0.0
 	else:
-		visual.modulate = tint if _flash_t > 0.0 else _COLORES.get(estado, Color.WHITE)
-		visual.scale.x  = _facing
+		sprite.flip_h = _facing < 0.0
+	match anim:
+		"attack_light", "attack_heavy":
+			sprite.offset = Vector2(25, -6)
+		_:
+			sprite.offset = Vector2(0, -6)
 
 
 func _gravedad(delta: float) -> void:
 	var g: float = ProjectSettings.get_setting("physics/2d/default_gravity")
 	if is_on_floor():
-		if not _was_floor:
-			_coyote = COYOTE
 		velocity.y = 0.0
 	else:
+		if _was_floor:
+			_coyote = COYOTE
 		var mult := FALL_MUL if velocity.y > 0.0 else 1.0
 		if estado == Estado.JUMP and not Input.is_action_pressed("jump") and velocity.y < 0.0:
 			mult = FALL_MUL
@@ -207,19 +264,27 @@ func _salto() -> void:
 
 func _ataque() -> void:
 	if Input.is_action_just_pressed("attack_light"):
+		if stamina < 15.0:
+			return
+		stamina -= 15.0
+		stamina_changed.emit(stamina)
+		velocity.x = 0.0
 		estado   = Estado.ATTACK_LIGHT
 		_atk_t   = 0.35
 		_hitbox_t= 0.15
+		_cs_hl.position.x = abs(_cs_hl.position.x) * _facing
 		_cs_hl.disabled = false
 		AudioManager.play("atk_light")
 	elif Input.is_action_just_pressed("attack_heavy"):
 		if devocion <= 0:
 			return
+		velocity.x = 0.0
 		devocion -= 1
 		devocion_changed.emit(devocion)
 		estado   = Estado.ATTACK_HEAVY
 		_atk_t   = 0.55
 		_hitbox_t= 0.20
+		_cs_hh.position.x = abs(_cs_hh.position.x) * _facing
 		_cs_hh.disabled = false
 		hitbox_heavy.set_meta("damage", int(25.0 * MandaSystem.modificador_ataque_pesado()))
 		AudioManager.play("atk_heavy")

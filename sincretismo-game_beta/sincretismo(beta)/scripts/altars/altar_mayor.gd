@@ -2,29 +2,39 @@ extends Area2D
 
 @export var costo_gracia: float = 20.0
 
-var _usado: bool = false
+var _usado:  bool = false
+var _player: Node = null
 
-@onready var visual:       ColorRect = $Visual
-@onready var label:        Label     = $Label
-@onready var label_prompt: Label     = $LabelPrompt
+@onready var visual:       Sprite2D = $Visual
+@onready var label_prompt: Label    = $LabelPrompt
+
+
+func _ready() -> void:
+	await get_tree().process_frame
+	var players: Array = get_tree().get_nodes_in_group("player")
+	if not players.is_empty():
+		_player = players[0]
+	if CheckpointSystem.hay_checkpoint() and \
+			CheckpointSystem.checkpoint_pos.distance_to(global_position) < 8.0 and \
+			_player != null:
+		_player.global_position = global_position + Vector2(0, -20)
+		_player.hp = _player.hp_max
+		_player.hp_changed.emit(_player.hp)
 
 
 func _process(_delta: float) -> void:
-	if _usado:
+	if _usado or _player == null:
 		label_prompt.visible = false
 		return
-	var players: Array = get_tree().get_nodes_in_group("player")
-	label_prompt.visible = not players.is_empty() and \
-		players[0].global_position.distance_to(global_position) < 65.0
+	label_prompt.visible = _player.global_position.distance_to(global_position) < 65.0
 
 
 func _input(event: InputEvent) -> void:
-	if _usado or not event.is_action_pressed("interact"):
+	if _usado or _player == null:
 		return
-	var players: Array = get_tree().get_nodes_in_group("player")
-	for p in players:
-		if p.global_position.distance_to(global_position) < 50.0:
-			_usar(p)
+	if event.is_action_pressed("interact"):
+		if _player.global_position.distance_to(global_position) < 50.0:
+			_usar(_player)
 
 
 func _usar(player: Node) -> void:
@@ -35,8 +45,7 @@ func _usar(player: Node) -> void:
 	player.hp = player.hp_max
 	player.hp_changed.emit(player.hp)
 	_usado = true
-	visual.color = Color(0.98, 0.655, 0.0, 1)
-	label.text   = "★"
+	visual.frame = 1
 	var scene := get_tree().current_scene.scene_file_path
 	CheckpointSystem.registrar(global_position, scene)
 	AudioManager.play("altar")
